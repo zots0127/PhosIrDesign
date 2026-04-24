@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-04-20T00:50:06.982033+00:00",
+  "sources": {
+    "training": "data/PhosIrDB.csv",
+    "testPlqy": "Project_Output/all_models/automl_train/xgboost/exports/test_predictions_xgboost_PLQY.csv",
+    "testWavelength": "Project_Output/all_models/automl_train/xgboost/exports/test_predictions_xgboost_Max_wavelength(nm).csv",
+    "virtual": "Project_Output/virtual_predictions_all.csv"
+  },
+  "stats": {
+    "training_count": 1667,
+    "test_count": 5,
+    "virtual_total_count": 270660,
+    "virtual_focus_count": 5000,
+    "representative_labels": [
+      "Ir1",
+      "Ir2",
+      "Ir3",
+      "Ir1a",
+      "Ir1b"
+    ],
+    "solvent_counts": {
+      "CH2Cl2": 965,
+      "CH3CN": 343,
+      "Toluene": 133,
+      "THF": 35,
+      "CHCl3": 32,
+      "CH3OH": 31,
+      "2-MeTHF": 25,
+      "DMSO": 24,
+      "H2O": 24,
+      "DMF": 15,
+      "PBS": 13,
+      "acetone": 6,
+      "Ethanol": 4,
+      "PBS/DMSO (9:1)": 2,
+      "cyclohexane": 2,
+      "Mill H20": 1,
+      "CH2Cl2/THF": 1
+    },
+    "wavelength_range_nm": {
+      "min": 417.0,
+      "max": 938.0
+    },
+    "plqy_range": {
+      "min": 6e-05,
+      "max": 1.0
+    },
+    "virtual_threshold_counts": {
+      "plqy>=0.60": 15210,
+      "plqy>=0.70": 4466,
+      "plqy>=0.80": 879,
+      "plqy>=0.90": 62
+    }
+  }
+}

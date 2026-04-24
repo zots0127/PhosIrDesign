@@ -1,0 +1,9 @@
+fastapi>=0.110
+uvicorn[standard]>=0.27
+pydantic>=2
+numpy>=1.23,<2
+pandas>=1.5
+scikit-learn>=1.1
+xgboost>=1.7
+joblib>=1.2
+rdkit>=2022.03.1

@@ -1,0 +1,183 @@
+<h1 align="center">PhosIrDesign</h1>
+
+<p align="center"><strong>A reproducible computational workflow for data-driven Ir(III) emitter design</strong></p>
+
+<p align="center">
+  <a href="https://zots0127.github.io/PhosIrDesign/">Interactive viewer</a> |
+  <a href="https://colab.research.google.com/github/zots0127/PhosIrDesign/blob/main/notebooks/run_in_colab.ipynb">
+    <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
+  </a>
+</p>
+
+<p align="center">
+  <a href="#overview">Overview</a> |
+  <a href="#concept">Concept</a> |
+  <a href="#reproduce-the-workflow">Reproduce</a> |
+  <a href="#explore-the-results">Explore</a> |
+  <a href="#repository-map">Repository Map</a>
+</p>
+
+<p align="center">
+  <img src="assets/images/pipeline_figure.png" alt="Closed-loop machine-learning-assisted Ir(III) emitter design pipeline" width="940">
+</p>
+
+## Overview
+
+PhosIrDesign is the companion code repository for a machine-learning-guided study of Ir(III) emitter molecular design. It provides the executable computational workflow behind the manually curated molecular dataset, ligand-level representation, predictive modelling, virtual screening, post-screening experimental follow-up, and candidate prioritization used in the study.
+
+The repository is intended to make the computational reasoning transparent. A researcher should be able to inspect the curated molecular tables, rerun the workflow, examine the model-derived outputs, and browse the resulting design space through a lightweight web interface.
+
+## Concept
+
+The central idea is a closed-loop molecular design workflow. Literature-derived Ir(III) emitter records are manually curated into ligand-level molecular tables. These records are converted into molecular representations, used to learn structure-property relationships, and then applied to a virtual library to prioritize new candidates.
+
+The screening results are not treated as an endpoint. They are part of a design loop: selected candidates can be synthesized and measured, and the resulting experimental observations can be returned to the dataset to refine subsequent rounds of prediction.
+
+This repository captures the computational part of that loop:
+
+| Stage | Purpose |
+| --- | --- |
+| Curated data | Standardized ligand-level records for Ir(III) emitters |
+| Molecular representation | Feature construction from `L1`, `L2`, and `L3` ligand structures |
+| Model comparison | Evaluating predictive models for emission wavelength and PLQY |
+| Post-screening validation | Prediction on experimentally measured emitters synthesized after virtual screening |
+| Virtual screening | Ranking candidate emitters from a combinatorial library |
+| Result inspection | Tables, figures, explainability summaries, and a browser-based viewer |
+
+## What Is Included
+
+| Component | Description |
+| --- | --- |
+| `data/PhosIrDB.csv` | Main manually curated Ir(III) emitter dataset |
+| `data/ours.csv` | Experimentally measured emitters synthesized after virtual screening, used for post-screening prediction exports |
+| `data/ir_assemble.csv` | Virtual-screening input library |
+| `phosirdesign/` | Reusable Python code for the computational workflow |
+| `scripts/` | Entry points for reproduction, analysis, prediction, and export |
+| `assets/` | Static data and images used by the README and web viewer |
+| `web/` | Interactive GitHub Pages viewer |
+| `backend/` | Optional Python prediction service for online ligand-set inference |
+| `notebooks/` | Colab/Jupyter launcher for one-click reproduction |
+
+The main prediction targets are:
+
+| Target | Meaning |
+| --- | --- |
+| `Max_wavelength(nm)` | Emission wavelength |
+| `PLQY` | Photoluminescence quantum yield |
+
+## Reproduce The Workflow
+
+The repository root is intentionally minimal. The complete workflow is launched with:
+
+```bash
+bash run.sh
+```
+
+By default, each run creates a fresh timestamped output directory:
+
+```text
+Project_Output_YYYYMMDD_HHMMSS/
+```
+
+For notebook-based reproduction, open:
+
+```text
+notebooks/run_in_colab.ipynb
+```
+
+The notebook is a thin launcher. It does not reimplement the analysis; it clones the repository and calls the same `bash run.sh` entry point used locally.
+
+## Release Computation
+
+Maintainers can manually run the full workflow from GitHub Actions and publish the resulting artifacts as a GitHub Release. The release job creates or updates the selected tag, runs `bash run.sh`, and uploads:
+
+- the complete `Project_Output` archive
+- release-matched XGBoost checkpoints for the predictor backend
+- workflow summary and model-comparison tables
+- SHA-256 checksums for release assets
+
+## Explore The Results
+
+The static viewer provides a browser-first way to inspect the computational outputs:
+
+[https://zots0127.github.io/PhosIrDesign/](https://zots0127.github.io/PhosIrDesign/)
+
+The viewer includes:
+
+- an overview of the curated dataset and screening outputs
+- searchable molecular records
+- post-screening synthesized-emitter predictions
+- a browser-sized virtual-screening subset
+- ligand-level SMILES visualization
+- an optional predictor page that can connect to the Python backend
+
+Representative visual outputs included in the repository:
+
+![Model performance and prediction overview](assets/images/figure_c_wavelength_plqy.png)
+
+![Ligand-level analysis overview](assets/images/figure_i_ligand_analysis.png)
+
+## Output Guide
+
+Workflow outputs are generated outside the tracked source tree. Local runs write a fresh timestamped directory:
+
+```text
+Project_Output_YYYYMMDD_HHMMSS/
+```
+
+The same artifact structure is published by the manual GitHub Actions release workflow as a `Project_Output` archive.
+
+| Output | What it represents |
+| --- | --- |
+| `workflow_summary.json` | Run-level summary and generated artifact map |
+| `model_comparison_detailed.csv` | Aggregated model comparison table |
+| `best_models_summary.csv` | Best-performing models by target and metric |
+| `test_predictions/` | Post-screening synthesized-emitter prediction exports |
+| `virtual_predictions_all.csv` | Full virtual-screening prediction table |
+| `virtual_predictions_all_sorted_by_plqy.csv` | Candidate ranking by predicted PLQY |
+| `figures/` | Computational figures generated by the workflow |
+| `shap_analysis/shap_report.html` | Model-interpretability report for selected model families |
+
+## Repository Map
+
+```text
+PhosIrDesign/
+├── README.md
+├── LICENSE
+├── run.sh
+├── data/
+├── phosirdesign/
+├── scripts/
+├── environment/
+├── assets/
+├── web/
+├── backend/
+├── notebooks/
+├── tests/
+└── .github/workflows/
+```
+
+The root directory is kept intentionally small. The executable workflow starts from `run.sh`; implementation details live under `scripts/`, reusable Python code lives under `phosirdesign/`, and browser-facing materials live under `web/` and `assets/`.
+
+## Reproducibility Notes
+
+Several safeguards are included to make reruns traceable:
+
+- default execution writes to a new timestamped output directory
+- manually specified output directories are rejected if they already contain workflow artifacts
+- saved model checkpoints preserve the transformations needed for consistent inference
+- regression tests cover previously identified reproducibility and prediction-loading failure modes
+
+## Scope
+
+This repository covers the computational workflow. It does not include synthetic procedures, raw spectroscopy files, microscopy or imaging raw data, device fabrication workflows, or in vivo hardware acquisition pipelines.
+
+Some publication-layout figures may be downstream formatted versions of repository outputs. The files here should be read as the executable computational companion to the study, not as a complete archive of every experimental data product.
+
+## Citation
+
+If you use this repository in academic work, please cite the associated article using the final bibliographic details.
+
+## License
+
+This repository is released under the MIT License. See [LICENSE](LICENSE) for details.
