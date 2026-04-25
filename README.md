@@ -94,7 +94,7 @@ The manuscript-level XGBoost/PLQY cross-validation and confusion-matrix values w
 | pandas | 2.3.3 |
 | SciPy | 1.13.1 |
 
-The workflow is designed to run on other platforms, including Linux CI. Small numerical differences can occur for tree-based models across XGBoost builds and platforms, so publication-level numerical comparisons should be interpreted against the reference environment above.
+The workflow is designed to run on other platforms, including Linux CI. Small numerical differences can occur for tree-based models across XGBoost builds and platforms, so publication-level numerical comparisons should be interpreted against the reference environment above. Public release artifacts are generated on a GitHub-hosted macOS runner for closer alignment with the reference platform; exact M2 Ultra reproduction requires a self-hosted runner.
 
 ## Release Computation
 
@@ -103,7 +103,10 @@ Maintainers can manually run the full workflow from GitHub Actions and publish t
 - the complete `Project_Output` archive
 - release-matched XGBoost checkpoints for the predictor backend
 - workflow summary and model-comparison tables
+- release runner environment metadata
 - SHA-256 checksums for release assets
+
+For platform-sensitivity checks, maintainers can also run the manual `Architecture Drift Check` workflow. It runs the XGBoost PLQY external-test slice on Linux and GitHub-hosted macOS, then uploads a compact report comparing prediction deltas, bin changes, and normalized confusion matrices.
 
 ## Output Guide
 
