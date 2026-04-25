@@ -10,6 +10,7 @@
   <a href="#overview">Overview</a> |
   <a href="#concept">Concept</a> |
   <a href="#reproduce-the-workflow">Reproduce</a> |
+  <a href="#reference-environment">Environment</a> |
   <a href="#output-guide">Outputs</a> |
   <a href="#repository-map">Repository Map</a>
 </p>
@@ -77,6 +78,23 @@ notebooks/run_in_colab.ipynb
 ```
 
 The notebook is a thin launcher. It does not reimplement the analysis; it clones the repository and calls the same `bash run.sh` entry point used locally.
+
+## Reference Environment
+
+The manuscript-level XGBoost/PLQY cross-validation and confusion-matrix values were verified on a local Apple silicon workstation:
+
+| Component | Reference setting |
+| --- | --- |
+| Hardware | Apple Mac Studio with M2 Ultra |
+| Operating system | macOS on arm64 Apple silicon |
+| Python | 3.9.6 |
+| XGBoost | 2.1.4 |
+| scikit-learn | 1.6.1 |
+| NumPy | 1.26.4 |
+| pandas | 2.3.3 |
+| SciPy | 1.13.1 |
+
+The workflow is designed to run on other platforms, including Linux CI. Small numerical differences can occur for tree-based models across XGBoost builds and platforms, so publication-level numerical comparisons should be interpreted against the reference environment above.
 
 ## Release Computation
 
