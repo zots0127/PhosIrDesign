@@ -37,7 +37,7 @@ docker run --rm -p 8000:8000 phosirdesign-api
 | --- | --- |
 | `PHOSIR_MODEL_DIR` | `backend/model_artifacts` |
 | `PHOSIR_DATA_PATH` | `data/PhosIrDB.csv` |
-| `PHOSIR_ALLOWED_ORIGINS` | `http://localhost:5173,http://127.0.0.1:5173,https://zots0127.github.io` |
+| `PHOSIR_ALLOWED_ORIGINS` | `http://localhost:5173,http://127.0.0.1:5173` |
 
 ## Use Release Models
 
@@ -54,7 +54,7 @@ tar -xzf PhosIrDesign-<version>-xgboost_models.tar.gz
 PHOSIR_MODEL_DIR="$PWD/xgboost_models" uvicorn backend.app:app --host 0.0.0.0 --port 8000
 ```
 
-The GitHub Pages predictor does not run Python models in the browser. It calls this API, so using the release-matched model bundle is the recommended way to keep online predictions aligned with a published release.
+Using the release-matched model bundle is the recommended way to keep API predictions aligned with a published release.
 
 ## Example
 
